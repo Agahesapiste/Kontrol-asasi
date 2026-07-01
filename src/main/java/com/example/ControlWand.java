@@ -1,6 +1,7 @@
-package com.seninmodid.controlwand; // <-- Burayı kendi klasör yolunla değiştireceksin!
+package net.fabricmc.example; // TLauncher ve projenin varsayılan klasör yoluyla eşitledim kanka!
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents; // Menüye ekleme kütüphanesi
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,6 +14,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemGroups; // Menü grubu kütüphanesi
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
@@ -54,11 +56,16 @@ public class ControlWand implements ModInitializer {
         // Modun yüklendiğini belirten o ilk log yazısı
         LOGGER.info("Control Wand Modu Basariyla Yuklendi! Asa hazirlaniyor...");
 
-        // Asayı Minecraft sistemine kaydeden kod
+        // Asayı Minecraft sistemine kaydeden kod (ID: controlwand:kontrol_asasi)
         Registry.register(BuiltInRegistries.ITEM, 
-                new ResourceLocation("controlwand", "kontrol_asasi"), 
+                ResourceLocation.fromNamespaceAndPath("controlwand", "kontrol_asasi"), 
                 KONTROL_ASASI
         );
+
+        // 🔥 İŞTE EKSİK OLAN KOD: Asayı Yaratıcılık Menüsündeki SAVAŞ (Combat) sekmesine ekler
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
+            content.add(KONTROL_ASASI);
+        });
     }
 
     // --- ASANIN ÖZEL EKRAN (GUI) SINIFI ---
@@ -126,4 +133,4 @@ public class ControlWand implements ModInitializer {
             return false; // Ekran açıkken oyun arka planda durmasın
         }
     }
-}
+}                                
